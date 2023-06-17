@@ -3,17 +3,16 @@ import store from './store';
 import { BrowserRouter } from 'react-router-dom';
 import Routes from './Routes';
 
-
 function App() {
-  if (!store) return <></>;
+	if (!store) return <></>;
 
-  return (
-    <Provider store={store}>
-      <BrowserRouter>
-          <Routes />
-      </BrowserRouter>
-    </Provider>
-  )
+	return (
+		<Provider store={store}>
+			<BrowserRouter>
+				<Routes />
+			</BrowserRouter>
+		</Provider>
+	);
 }
 
-export default App
+export default App;
