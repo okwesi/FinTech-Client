@@ -4,10 +4,11 @@ import AppHeader from '../../lib/components/AppHeader';
 const Home = () => {
 	return (
 		<div
-			style={{
-				overflowX: 'hidden',
-			}}
+        style={{
+            overflowX: 'hidden',
+        }}
 		>
+        <AppHeader />
 			<img
 				src="https://images.ctfassets.net/6ndujxh3wgyb/6NwlZ5M6qNPq0oyUXcG0Zs/f136a24762389b14bccf9f8e80e7e357/the-future-of-fintech-header.jpg"
 				alt="Google"

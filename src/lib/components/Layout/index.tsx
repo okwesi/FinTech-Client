@@ -6,7 +6,9 @@ const Layout = () => {
 	return (
 		<>
 			<AppHeader />
-			<Outlet />
+			<div style={{ padding: '0 6% ' }}>
+				<Outlet />
+			</div>
 		</>
 	);
 };
