@@ -1,11 +1,14 @@
 import React from 'react';
+import AppHeader from '../../lib/components/AppHeader';
 
 
 
 const Home = () => {
     return (
-        <div>
-            Home
+        <div style={{
+            overflowX: 'hidden',
+        }}>
+            <AppHeader />
         </div>
     )
 }

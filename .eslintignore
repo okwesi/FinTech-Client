@@ -1,0 +1,6 @@
+scripts/*
+__tests__/*
+node_modules/*
+.idea/*
+build/*
+.github/*
