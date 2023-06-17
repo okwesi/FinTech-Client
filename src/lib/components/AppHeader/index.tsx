@@ -2,12 +2,17 @@ import React from 'react';
 import { Layout, Button, Avatar, Dropdown, Space, MenuProps } from 'antd';
 import { DownOutlined, UserOutlined } from '@ant-design/icons';
 import { useLocation, useNavigate } from 'react-router-dom';
+import AddBondModal from '../Modals/AddBondModal';
+import AddStockModal from '../Modals/AddStockModal';
 
 const { Header } = Layout;
 
 const AppHeader = () => {
     const location = useLocation();
     const navigate = useNavigate();
+
+    const [openBond, setBondOpen] = React.useState(false);
+    const [openStock, setStockOpen] = React.useState(false);
 
     const isActive = (path: any) => {
         return location.pathname === path;
@@ -31,16 +36,16 @@ const AppHeader = () => {
         navigate('/');
     };
 
-    const items = [
+    const items : MenuProps = [
         {
             label: 'Add Stock',
             key: '0',
-            onClick: () => navigate('/stock'),
+            onClick: () => setStockOpen(true),
         },
         {
             label: 'Add Bond',
             key: '1',
-            onClick: () => navigate('/bonds'),
+            onClick: () => setBondOpen(true),
         },
         {
             type: 'divider',
@@ -93,6 +98,8 @@ const AppHeader = () => {
                     </div>
                 )}
             </Header>
+            <AddBondModal open={openBond} handleClose={() => setBondOpen(false)} />
+            <AddStockModal open={openStock} handleClose={() => setStockOpen(false)} />
         </>
     );
 };
