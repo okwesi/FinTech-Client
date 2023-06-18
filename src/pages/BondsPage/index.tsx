@@ -1,14 +1,27 @@
 import { CaretUpOutlined, CaretDownOutlined } from '@ant-design/icons';
 import { Row, Col, Card, Typography, Divider, Space, Button } from 'antd';
 import React from 'react';
+import { useDispatch } from 'react-redux';
+import { useBondsState } from '../../store/selector';
+import bondsAsyncActions from '../../store/bonds/bonds.thunk';
+import Bond from '../../models/Bond';
+import UTC from '../../lib/utils/date';
 
 const BondsPage = () => {
-	const cardData = [
-		{ title: 'My First Bond', price: 50, positiveChange: false },
-		{ title: 'My First Bond', price: 50, positiveChange: false },
-		{ title: 'My First Bond', price: 50, positiveChange: false },
-		{ title: 'My First Bond', price: 50, positiveChange: false },
-	];
+	const dispatch = useDispatch<any>();
+	const bondsState = useBondsState();
+
+	const bonds = React.useMemo(() => {
+		if (bondsState.list.length === 0) {
+			return;
+		}
+		return bondsState.list;
+	}, [bondsState.list]);
+
+	React.useEffect(() => {
+		dispatch(bondsAsyncActions.index())
+	}, [])
+
 	return (
 		<div>
 			<Row gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }} justify="space-between" align="top">
@@ -20,16 +33,16 @@ const BondsPage = () => {
 							height: '100vh',
 						}}
 					>
-						{cardData.map((data, index) => (
+						{bonds?.map(({ _id, bondName, maturityDate, purchaseDate, purchaseValue }: Bond) => (
 							<Card
-								key={index}
+								key={_id}
 								bordered={false}
 								style={{
 									width: '100%',
 									marginBottom: '10px',
 								}}
 							>
-								<Typography style={{ fontWeight: 700 }}>{data.title}</Typography>
+								<Typography style={{ fontWeight: 700 }}>{bondName}</Typography>
 								<Divider />
 								<div
 									style={{
@@ -39,19 +52,19 @@ const BondsPage = () => {
 										alignItems: 'center',
 									}}
 								>
-									<Typography style={{ fontWeight: 500 }}>AAAL</Typography>
+									<Typography style={{ fontWeight: 500 }}>Purcase: {UTC(purchaseDate)}</Typography>
 									{true ? (
 										<Typography style={{ fontWeight: 400 }}>
 											{' '}
-											<CaretUpOutlined style={{ color: 'greenyellow' }} /> ${data.price}
+											<CaretUpOutlined style={{ color: 'greenyellow' }} /> ${purchaseValue}
 										</Typography>
 									) : (
 										<Typography style={{ fontWeight: 400 }}>
 											{' '}
-											<CaretDownOutlined style={{ color: 'red' }} /> ${data.price}
+											<CaretDownOutlined style={{ color: 'red' }} /> ${purchaseValue}
 										</Typography>
 									)}
-									<Typography style={{ fontWeight: 400 }}> 25-10-2023</Typography>
+									<Typography style={{ fontWeight: 500 }}>Marity: {UTC(maturityDate)}</Typography>
 								</div>
 							</Card>
 						))}

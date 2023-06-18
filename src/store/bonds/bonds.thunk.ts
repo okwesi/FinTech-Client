@@ -1,12 +1,12 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import { requestActions } from '../request';
 import API from '../../lib/utils/api';
-import StocksResponse from '../../network/response/StocksResponse';
+import BondsResponse from '../../network/response/BondsResponse';
 
-const index = createAsyncThunk('user-stocks/', async (payload, thunkApi) => {
+const index = createAsyncThunk('user-bonds/', async (payload, thunkApi) => {
     thunkApi.dispatch(requestActions.started(index.typePrefix));
     try {
-        const response = await API.get<any, StocksResponse>('user-stocks/');
+        const response = await API.get<any, BondsResponse>('user-bonds/');
 
         return response.data;
     } catch (error) {
@@ -14,8 +14,8 @@ const index = createAsyncThunk('user-stocks/', async (payload, thunkApi) => {
     }
 });
 
-const stocksAsyncActions = {
+const bondsAsyncActions = {
     index,
 };
 
-export default stocksAsyncActions;
+export default bondsAsyncActions;

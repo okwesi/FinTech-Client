@@ -5,12 +5,16 @@ import request from './request';
 import user from './user';
 import authentication from './authentication';
 import stocks from './stocks';
+import bonds from './bonds';
+import rapidstocks from './rapidAPIStocks';
 
 const reducers = {
 	user,
 	request,
 	authentication,
 	stocks,
+	bonds,
+	rapidstocks,
 };
 
 const rootReducer = combineReducers(reducers);

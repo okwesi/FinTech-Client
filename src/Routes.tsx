@@ -8,6 +8,7 @@ import StockPage from './pages/StockPage';
 import BondsPage from './pages/BondsPage';
 import StockDetailPage from './pages/StockDetailPage';
 import BondDetailPage from './pages/BondDetailPage';
+import RapidStocksPage from './pages/RapidStocksPage';
 
 const Routes = () => {
 	return (
@@ -21,6 +22,7 @@ const Routes = () => {
 				<Route path="/stock/:id" element={<StockDetailPage />} />
 				<Route path="/bonds" element={<BondsPage />} />
 				<Route path="/bonds/:id" element={<BondDetailPage />} />
+				<Route path="/stocks" element={<RapidStocksPage />} />
 			</Route>
 			<Route path="*" element={<Navigate to={'/'} replace />} />
 		</DefaultRoutes>

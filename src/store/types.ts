@@ -2,6 +2,8 @@ import { PayloadAction } from '@reduxjs/toolkit';
 import User from '../models/User';
 import Stock from '../models/Stock';
 import { Pagination } from '../network/response/StocksResponse';
+import Bond from '../models/Bond';
+import RapidStocks from '../models/RapidStock';
 
 export interface SliceState<T> {
 	updatedAt: number;
@@ -19,7 +21,14 @@ export type StocksState = {
 	pagination: Pagination;
 	updatedAt: number;
 };
-// export type StocksState = SliceState<Stock>;
+
+export type BondsState = {
+	list: Array<Bond>;
+	pagination: Pagination;
+	updatedAt: number;
+};
+
+export type RapidStocksState = SliceState<RapidStocks>;
 
 export interface ValidationState {}
 
