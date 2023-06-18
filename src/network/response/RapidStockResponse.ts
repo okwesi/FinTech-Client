@@ -1,4 +1,4 @@
-import RapidStocks from "../../models/RapidStock";
+import RapidStocks from '../../models/RapidStock';
 
 type RapidStocksResponse = Array<RapidStocks>;
 

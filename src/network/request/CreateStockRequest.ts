@@ -1,3 +1,1 @@
-export default interface CreateStockRequest {
-
-}
+export default interface CreateStockRequest {}

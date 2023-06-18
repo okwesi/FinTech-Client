@@ -9,7 +9,6 @@ import authenticationAsyncActions from '../../store/authentication/authenticatio
 import isAnyEmpty from '../../lib/utils/isEmpty';
 
 const SignnPage = () => {
-
 	const navigate = useNavigate();
 	const dispatch = useDispatch<any>();
 

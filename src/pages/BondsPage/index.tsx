@@ -1,15 +1,21 @@
-import { CaretUpOutlined, CaretDownOutlined } from '@ant-design/icons';
-import { Row, Col, Card, Typography, Divider, Space, Button } from 'antd';
+import { CaretUpOutlined, CaretDownOutlined, DeleteOutlined } from '@ant-design/icons';
+import { Row, Col, Card, Typography, Divider, Space, Button, Popconfirm, message } from 'antd';
 import React from 'react';
 import { useDispatch } from 'react-redux';
-import { useBondsState } from '../../store/selector';
+import { useBondsState, useRequestState } from '../../store/selector';
 import bondsAsyncActions from '../../store/bonds/bonds.thunk';
 import Bond from '../../models/Bond';
 import UTC from '../../lib/utils/date';
+import RequestManager from '../../store/request/manager';
 
 const BondsPage = () => {
 	const dispatch = useDispatch<any>();
 	const bondsState = useBondsState();
+	
+	const request = useRequestState();
+	const [requestUpdatedAt, setRequestUpdatedAt] = React.useState(request.updatedAt);
+
+	const [isLoading, setIsLoading] = React.useState(false);
 
 	const bonds = React.useMemo(() => {
 		if (bondsState.list.length === 0) {
@@ -19,8 +25,46 @@ const BondsPage = () => {
 	}, [bondsState.list]);
 
 	React.useEffect(() => {
-		dispatch(bondsAsyncActions.index())
-	}, [])
+		dispatch(bondsAsyncActions.index());
+	}, []);
+
+	React.useEffect(() => {
+		if (requestUpdatedAt === request.updatedAt) {
+			return;
+		}
+
+		const RM = new RequestManager(request, dispatch);
+
+		if (RM.isFulfilled(bondsAsyncActions.destroy.typePrefix)) {
+			RM.consume(bondsAsyncActions.destroy.typePrefix);
+			message.success('Bond deleted successfully');
+			setIsLoading(false);
+			return;
+		}
+
+		if (RM.isRejected(bondsAsyncActions.destroy.typePrefix)) {
+			RM.consume(bondsAsyncActions.destroy.typePrefix);
+			message.error('Something went wrong');
+			setIsLoading(false);
+			return;
+		}
+	}, [requestUpdatedAt, request.updatedAt, dispatch]);
+
+	// const stocks = React.useMemo(() => {
+	// 	if (!stocksState.list) {
+	// 		return;
+	// 	}
+	// 	return stocksState.list;
+	// }, [stocksState.list]);
+
+
+	const destroy = React.useCallback((bondId: string) => {
+		if (isLoading) {
+			return;
+		}
+		setIsLoading(true);
+		dispatch(bondsAsyncActions.destroy(bondId));
+	}, [isLoading, dispatch]);
 
 	return (
 		<div>
@@ -42,7 +86,24 @@ const BondsPage = () => {
 									marginBottom: '10px',
 								}}
 							>
-								<Typography style={{ fontWeight: 700 }}>{bondName}</Typography>
+								<div
+									style={{
+										display: 'flex',
+										flexDirection: 'row',
+										justifyContent: 'space-between',
+										alignItems: 'center',
+									}}
+								>
+									<Typography style={{ fontWeight: 700 }}>{bondName}</Typography>
+									<Popconfirm
+										title="Are you sure you want to delete this?"
+										onConfirm={() => destroy(_id)}
+										okText="Yes"
+										cancelText="No"
+									>
+										<Button type="link" icon={<DeleteOutlined />} />
+									</Popconfirm>
+								</div>
 								<Divider />
 								<div
 									style={{

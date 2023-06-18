@@ -25,15 +25,9 @@ const AddBondModal = ({ handleClose, open }: any) => {
 	const request = useRequestState();
 	const [requestUpdatedAt, setRequestUpdatedAt] = React.useState(request.updatedAt);
 
-
 	const { Option } = Select;
 
-	const paymentFrequencyOptions = [
-		'Annual',
-		'Semi-annual',
-		'Quarterly',
-		'Monthly'
-	];
+	const paymentFrequencyOptions = ['Annual', 'Semi-annual', 'Quarterly', 'Monthly'];
 
 	React.useEffect(() => {
 		if (requestUpdatedAt === request.updatedAt) {
@@ -69,7 +63,7 @@ const AddBondModal = ({ handleClose, open }: any) => {
 		}
 
 		setIsLoading(true);
-		console.log('here')
+		console.log('here');
 		dispatch(
 			bondsAsyncActions.store({
 				bondName,
@@ -82,22 +76,33 @@ const AddBondModal = ({ handleClose, open }: any) => {
 				organization,
 			})
 		);
-	}, [bondName, faceValue, couponRate, maturityDate, purchaseValue, paymentFrequency, purchaseDate, organization, dispatch]);
-
-
+	}, [
+		bondName,
+		faceValue,
+		couponRate,
+		maturityDate,
+		purchaseValue,
+		paymentFrequency,
+		purchaseDate,
+		organization,
+		dispatch,
+	]);
 
 	return (
 		<>
-			<Modal centered open={open} onOk={store} onCancel={handleClose} width={700} style={{ opacity: isLoading ? 0.5 : 1 }}>
+			<Modal
+				centered
+				open={open}
+				onOk={store}
+				onCancel={handleClose}
+				width={700}
+				style={{ opacity: isLoading ? 0.5 : 1 }}
+			>
 				<Typography style={{ fontWeight: '600', fontSize: '20px' }}>Add Bond</Typography>
 				<Divider />
 				<Form>
 					<Form.Item>
-						<Input
-							placeholder="Bond Name"
-							value={bondName}
-							onChange={(e) => setBondName(e.target.value)}
-						/>
+						<Input placeholder="Bond Name" value={bondName} onChange={(e) => setBondName(e.target.value)} />
 					</Form.Item>
 					<Row gutter={[16, 16]}>
 						<Col span={12}>
@@ -137,17 +142,17 @@ const AddBondModal = ({ handleClose, open }: any) => {
 								<Select
 									placeholder="Payment Frequency"
 									value={paymentFrequency}
-									onChange={value => setPaymentFrequency(value)}
+									onChange={(value) => setPaymentFrequency(value)}
 								>
-									{paymentFrequencyOptions.map(option => (
-										<Option key={option} value={option}>{option}</Option>
+									{paymentFrequencyOptions.map((option) => (
+										<Option key={option} value={option}>
+											{option}
+										</Option>
 									))}
 								</Select>
 							</Form.Item>
-
 						</Col>
 					</Row>
-
 
 					<Row gutter={[16, 16]}>
 						<Col span={12}>
@@ -156,7 +161,7 @@ const AddBondModal = ({ handleClose, open }: any) => {
 									style={{ width: '100%' }}
 									value={purchaseDate ? moment(purchaseDate, 'YYYY-MM-DD') : null}
 									onChange={(date, dateString) => setPurchaseDate(dateString)}
-									placeholder='Purchase Date'
+									placeholder="Purchase Date"
 								/>
 							</Form.Item>
 						</Col>
@@ -166,13 +171,11 @@ const AddBondModal = ({ handleClose, open }: any) => {
 									style={{ width: '100%' }}
 									value={maturityDate ? moment(maturityDate, 'YYYY-MM-DD') : null}
 									onChange={(date, dateString) => setMaturityDate(dateString)}
-									placeholder='Maturity Date'
+									placeholder="Maturity Date"
 								/>
 							</Form.Item>
 						</Col>
 					</Row>
-
-
 
 					<Form.Item>
 						<Input
@@ -185,7 +188,6 @@ const AddBondModal = ({ handleClose, open }: any) => {
 						Submit here
 					</Button> */}
 				</Form>
-
 			</Modal>
 		</>
 	);

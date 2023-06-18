@@ -7,7 +7,6 @@ import rapidStocksAsyncActions from '../../store/rapidAPIStocks/rapidStocks.thun
 import RapidStocks from '../../models/RapidStock';
 
 const RapidStocksPage = () => {
-
 	const dispatch = useDispatch<any>();
 	const rapidStocksState = useRapidStocksState();
 
@@ -15,15 +14,12 @@ const RapidStocksPage = () => {
 		dispatch(rapidStocksAsyncActions.index());
 	}, []);
 
-
 	const rapidStocks = React.useMemo(() => {
 		if (!rapidStocksState.list) {
 			return;
 		}
 		return rapidStocksState.list;
 	}, [rapidStocksState.list]);
-
-
 
 	return (
 		<div>
@@ -42,19 +38,25 @@ const RapidStocksPage = () => {
 								<Typography style={{ fontWeight: 500 }}>{symbol}</Typography>
 								<Typography style={{ fontWeight: 400 }}>{`$${lastPrice}`}</Typography>
 								{change > 0 ? (
-									<Typography><CaretUpOutlined style={{ color: 'greenyellow', marginRight: '5px' }} /><b>{change.toFixed(2)}%</b></Typography>
+									<Typography>
+										<CaretUpOutlined style={{ color: 'greenyellow', marginRight: '5px' }} />
+										<b>{change.toFixed(2)}%</b>
+									</Typography>
 								) : (
-										<Typography><CaretUpOutlined style={{ color: 'red', marginRight: '5px' }} /><b>{change.toFixed(2)}%</b></Typography>
+									<Typography>
+										<CaretUpOutlined style={{ color: 'red', marginRight: '5px' }} />
+										<b>{change.toFixed(2)}%</b>
+									</Typography>
 								)}
 							</div>
 							<Divider />
 							<div>
-								<Row gutter={[16, 16]} justify='space-evenly'>
-									<Col span={8} >
+								<Row gutter={[16, 16]} justify="space-evenly">
+									<Col span={8}>
 										<Typography style={{ textAlign: 'center' }}>
 											<b>Previous Close</b>
 										</Typography>
-										<Typography style={{textAlign: 'center'}}>{previousClose}</Typography>
+										<Typography style={{ textAlign: 'center' }}>{previousClose}</Typography>
 									</Col>
 									<Col span={8}>
 										<Typography style={{ textAlign: 'center' }}>
@@ -74,7 +76,6 @@ const RapidStocksPage = () => {
 					</Col>
 				))}
 			</Row>
-
 		</div>
 	);
 };

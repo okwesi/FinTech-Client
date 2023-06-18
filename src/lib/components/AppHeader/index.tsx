@@ -4,7 +4,7 @@ import { DownOutlined, UserOutlined } from '@ant-design/icons';
 import { useLocation, useNavigate } from 'react-router-dom';
 import AddBondModal from '../Modals/AddBondModal';
 import AddStockModal from '../Modals/AddStockModal';
-import { useAuthenticationState } from '../../../store/selector';
+import { useAuthenticationState, useUserState } from '../../../store/selector';
 import { useDispatch } from 'react-redux';
 import authenticationAsyncActions from '../../../store/authentication/authentication.thunk';
 
@@ -19,6 +19,7 @@ const AppHeader = () => {
 	const [openStock, setStockOpen] = React.useState(false);
 
 	const authenticationState = useAuthenticationState();
+	const userState = useUserState();
 
 	const isAuth = authenticationState.isAuthenticated;
 
@@ -43,6 +44,13 @@ const AppHeader = () => {
 	const handleHome = () => {
 		navigate('/');
 	};
+
+	const username = React.useMemo(() => {
+		if (!userState) {
+			return;
+		}
+		return userState.username;
+	}, [userState]);
 
 	const signOut = () => {
 		dispatch(authenticationAsyncActions.signOut());
@@ -105,7 +113,7 @@ const AppHeader = () => {
 						<Dropdown menu={{ items }} trigger={['click']}>
 							<a onClick={(e) => e.preventDefault()}>
 								<Space>
-									Username
+									{username}
 									<DownOutlined />
 								</Space>
 							</a>

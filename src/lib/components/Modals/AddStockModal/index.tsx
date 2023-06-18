@@ -8,7 +8,6 @@ import stocksAsyncActions from '../../../../store/stocks/stocks.thunk';
 import RequestManager from '../../../../store/request/manager';
 import isAnyEmpty from '../../../utils/isEmpty';
 
-
 const AddStockModal = ({ handleClose, open }: any) => {
 	const [stockName, setStockName] = React.useState('');
 	const [purchasePrice, setPurchasePrice] = React.useState('');
@@ -53,16 +52,7 @@ const AddStockModal = ({ handleClose, open }: any) => {
 			return;
 		}
 
-		if (
-			isAnyEmpty([
-				stockName,
-				purchasePrice,
-				purchaseQuantity,
-				stockSymbol,
-				purchaseDate,
-				brokerage
-			])
-		) {
+		if (isAnyEmpty([stockName, purchasePrice, purchaseQuantity, stockSymbol, purchaseDate, brokerage])) {
 			message.error('Please fill all the fields');
 			return;
 		}
@@ -76,10 +66,9 @@ const AddStockModal = ({ handleClose, open }: any) => {
 				purchaseQuantity,
 				stockSymbol,
 				purchaseDate,
-				brokerage
+				brokerage,
 			})
 		);
-
 	}, [
 		stockName,
 		purchasePrice,
@@ -89,17 +78,23 @@ const AddStockModal = ({ handleClose, open }: any) => {
 		brokerage,
 		dispatch,
 		isLoading,
-		handleClose
+		handleClose,
 	]);
 
 	return (
 		<>
-			<Modal centered open={open} onOk={store} onCancel={handleClose} width={700} style={{ opacity: isLoading ? 0.5 : 1 }}>
-
+			<Modal
+				centered
+				open={open}
+				onOk={store}
+				onCancel={handleClose}
+				width={700}
+				style={{ opacity: isLoading ? 0.5 : 1 }}
+			>
 				<Typography style={{ fontWeight: '600', fontSize: '20px' }}>Add Stock</Typography>
 				<Divider />
 
-				<Form >
+				<Form>
 					<Row gutter={[16, 16]}>
 						<Col span={12}>
 							<Form.Item name="stockName">
@@ -148,7 +143,6 @@ const AddStockModal = ({ handleClose, open }: any) => {
 							value={purchaseDate ? moment(purchaseDate, 'YYYY-MM-DD') : null}
 							onChange={(date, dateString) => setPurchaseDate(dateString)}
 						/>
-
 					</Form.Item>
 					<Form.Item name="brokerage">
 						<Input
@@ -161,7 +155,6 @@ const AddStockModal = ({ handleClose, open }: any) => {
 						<button type="submit">Submit</button>
 					</Form.Item> */}
 				</Form>
-
 			</Modal>
 		</>
 	);

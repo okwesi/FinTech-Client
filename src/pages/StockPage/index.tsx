@@ -1,21 +1,24 @@
-import { CaretDownOutlined, CaretUpOutlined } from '@ant-design/icons';
-import { Divider, Row, Col, Space, Card, Typography, Button } from 'antd';
+import { CaretDownOutlined, CaretUpOutlined, DeleteOutlined } from '@ant-design/icons';
+import { Divider, Row, Col, Space, Card, Typography, Button, message, Popconfirm } from 'antd';
 import Title from 'antd/es/typography/Title';
 import React from 'react';
-import { useRapidStocksState, useStocksState } from '../../store/selector';
+import { useRapidStocksState, useRequestState, useStocksState } from '../../store/selector';
 import { useDispatch } from 'react-redux';
 import stocksAsyncActions from '../../store/stocks/stocks.thunk';
 import Stock from '../../models/Stock';
 import rapidStocksAsyncActions from '../../store/rapidAPIStocks/rapidStocks.thunk';
 import RapidStocks from '../../models/RapidStock';
 import { Link } from 'react-router-dom';
+import RequestManager from '../../store/request/manager';
 
 const StockPage = () => {
-
 	const dispatch = useDispatch<any>();
+	const request = useRequestState();
 	const stocksState = useStocksState();
 	const rapidStocksState = useRapidStocksState();
+	const [isLoading, setIsLoading] = React.useState(false);
 
+	const [requestUpdatedAt, setRequestUpdatedAt] = React.useState(request.updatedAt);
 
 	React.useEffect(() => {
 		dispatch(stocksAsyncActions.index());
@@ -24,6 +27,29 @@ const StockPage = () => {
 	React.useEffect(() => {
 		dispatch(rapidStocksAsyncActions.index());
 	}, []);
+
+
+	React.useEffect(() => {
+		if (requestUpdatedAt === request.updatedAt) {
+			return;
+		}
+
+		const RM = new RequestManager(request, dispatch);
+
+		if (RM.isFulfilled(stocksAsyncActions.destroy.typePrefix)) {
+			RM.consume(stocksAsyncActions.destroy.typePrefix);
+			message.success('Stock deleted successfully');
+			setIsLoading(false);
+			return;
+		}
+
+		if (RM.isRejected(stocksAsyncActions.store.typePrefix)) {
+			RM.consume(stocksAsyncActions.store.typePrefix);
+			message.error('Something went wrong');
+			setIsLoading(false);
+			return;
+		}
+	}, [requestUpdatedAt, request.updatedAt, dispatch]);
 
 	const stocks = React.useMemo(() => {
 		if (!stocksState.list) {
@@ -40,21 +66,34 @@ const StockPage = () => {
 	}, [rapidStocksState.list]);
 
 
+	const destroy = React.useCallback((stockId: string) => {
+		if (isLoading) {
+			return;
+		}
+
+		setIsLoading(true);
+		dispatch(stocksAsyncActions.destroy(stockId));
+	}, [isLoading, dispatch]);
+
+
+
 
 	return (
 		<div>
 			<Row gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }} justify="space-between" align="top">
 				<Col className="gutter-row" span={6}>
 					<div style={{ width: '100%', overflow: 'hidden' }}>
-						<Typography style={{fontWeight: 600, fontSize: '16px', margin: '3px 0'}} >Stock Markert</Typography>
-						{rapidStocks?.map(({ _id, symbol, lastPrice, change }: RapidStocks) => (
+						<Typography style={{ fontWeight: 600, fontSize: '16px', margin: '3px 0' }}>
+							Stock Markert
+						</Typography>
+						{rapidStocks?.map(({ symbol, lastPrice, change }: RapidStocks, index) => (
 							<Card
 								bordered={false}
 								style={{
 									width: '100%',
 									marginBottom: '10px',
 								}}
-								key={_id}
+								key={index}
 							>
 								<div
 									style={{
@@ -74,10 +113,15 @@ const StockPage = () => {
 								</div>
 							</Card>
 						))}
-						<Typography style={{textAlign: 'center'}} >
+						<Typography style={{ textAlign: 'center' }}>
 							<Link
 								to="/stocks"
-								style={{ color: 'blue', textAlign: 'center', textDecoration: 'underline', cursor: 'pointer' }}
+								style={{
+									color: 'blue',
+									textAlign: 'center',
+									textDecoration: 'underline',
+									cursor: 'pointer',
+								}}
 							>
 								More Stocks
 							</Link>
@@ -91,7 +135,9 @@ const StockPage = () => {
 							height: '100vh',
 						}}
 					>
-						<Typography style={{ fontWeight: 600, fontSize: '16px', margin: '3px 0' }} >Your Stocks</Typography>
+						<Typography style={{ fontWeight: 600, fontSize: '16px', margin: '3px 0' }}>
+							Your Stocks
+						</Typography>
 
 						{stocks?.map(({ _id, stockName, stockSymbol, purchasePrice }: Stock) => (
 							<Card
@@ -100,9 +146,28 @@ const StockPage = () => {
 								style={{
 									width: '100%',
 									marginBottom: '10px',
+
 								}}
 							>
-								<Typography style={{ fontWeight: 700 }}>{stockName}</Typography>
+								<div
+									style={{
+										display: 'flex',
+										flexDirection: 'row',
+										justifyContent: 'space-between',
+										alignItems: 'center',
+									}}
+								>
+									<Typography style={{ fontWeight: 700 }}>{stockName}</Typography>
+									<Popconfirm
+										title="Are you sure you want to delete this?"
+										onConfirm={() => destroy(_id)}
+										okText="Yes"
+										cancelText="No"
+									>
+										<Button type="link" icon={<DeleteOutlined />} />
+									</Popconfirm>
+								</div>
+
 								<Divider />
 								<div
 									style={{

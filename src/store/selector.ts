@@ -19,13 +19,12 @@ export function useAuthenticationState() {
 	return useTypedSelector<AuthenticationState>(({ authentication }) => authentication);
 }
 
-
 export function useStocksState() {
-	return useTypedSelector<StocksState>(({stocks}) => stocks);
+	return useTypedSelector<StocksState>(({ stocks }) => stocks);
 }
 
 export function useBondsState() {
-	return useTypedSelector<BondsState>(({bonds}) => bonds);
+	return useTypedSelector<BondsState>(({ bonds }) => bonds);
 }
 
 export function useRapidStocksState() {
