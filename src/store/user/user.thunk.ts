@@ -4,8 +4,6 @@ import User from '../../models/User';
 
 import { requestActions } from '../request';
 
-
-
 // const updateUser = createAsyncThunk('user/update', async (payload: UpdateUserRequest, thunkApi) => {
 // 	thunkApi.dispatch(requestActions.started(updateUser.typePrefix));
 // 	try {
@@ -16,8 +14,6 @@ import { requestActions } from '../request';
 // 		return thunkApi.rejectWithValue({ payload, error });
 // 	}
 // });
-
-
 
 const deleteAccount = createAsyncThunk('user/delete-account', async (payload, thunkApi) => {
 	thunkApi.dispatch(requestActions.started(deleteAccount.typePrefix));

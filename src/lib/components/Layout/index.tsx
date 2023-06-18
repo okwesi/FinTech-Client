@@ -5,7 +5,7 @@ import colors from '../../../assets/colors';
 
 const Layout = () => {
 	return (
-        <div style={{ backgroundColor: colors.background}}>
+		<div style={{ backgroundColor: colors.background }}>
 			<AppHeader />
 			<div style={{ padding: '0 6% ' }}>
 				<Outlet />

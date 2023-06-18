@@ -6,7 +6,7 @@ import React from 'react';
 import initializeStore from './store';
 
 function App() {
-	const[store, setStore] = React.useState<Store>();
+	const [store, setStore] = React.useState<Store>();
 
 	React.useEffect(() => {
 		const start = async () => {

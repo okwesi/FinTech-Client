@@ -10,21 +10,21 @@ import StockDetailPage from './pages/StockDetailPage';
 import BondDetailPage from './pages/BondDetailPage';
 
 const Routes = () => {
-    return (
-        <DefaultRoutes>
-            {/* <Route path="/" element={<Navigate to={'/'} replace />} /> */}
-            <Route path="/" element={<Home />} />
-            <Route path="/signup" element={<SignUpPage />} />
-            <Route path="/signin" element={<SignnPage />} />
-            <Route path="/" element={<Layout />}>
-                <Route path="/stock" element={<StockPage />} />
-                <Route path="/stock/:id" element={<StockDetailPage />} />
-                <Route path="/bonds" element={<BondsPage />} />
-                <Route path="/bonds/:id" element={<BondDetailPage />} />
-            </Route>
-            <Route path="*" element={<Navigate to={'/'} replace />} />
-        </DefaultRoutes>
-    );
+	return (
+		<DefaultRoutes>
+			{/* <Route path="/" element={<Navigate to={'/'} replace />} /> */}
+			<Route path="/" element={<Home />} />
+			<Route path="/signup" element={<SignUpPage />} />
+			<Route path="/signin" element={<SignnPage />} />
+			<Route path="/" element={<Layout />}>
+				<Route path="/stock" element={<StockPage />} />
+				<Route path="/stock/:id" element={<StockDetailPage />} />
+				<Route path="/bonds" element={<BondsPage />} />
+				<Route path="/bonds/:id" element={<BondDetailPage />} />
+			</Route>
+			<Route path="*" element={<Navigate to={'/'} replace />} />
+		</DefaultRoutes>
+	);
 };
 
 export default Routes;

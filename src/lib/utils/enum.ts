@@ -1,5 +1,4 @@
-
-export  class Roles {
-    static readonly ADMIN = 1;
-    static readonly USER = 2;
+export class Roles {
+	static readonly ADMIN = 1;
+	static readonly USER = 2;
 }

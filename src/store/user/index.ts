@@ -9,9 +9,6 @@ import userAsyncActions from './user.thunk';
 import OkResponse from '../../network/response/OkResponse';
 import AuthenticationResponse from '../../network/response/AuthenticationResponse';
 
-
-
-
 const initialState: User = {
 	_id: '',
 	email: '',
@@ -21,14 +18,14 @@ const initialState: User = {
 	updatedAt: '',
 };
 
-// const fillAuth = (state: typeof initialState, { payload }: CPA<AuthenticationResponse>) => {
-// 	state._id = payload.user.id;
-// 	state.email = payload.user.email;
-// 	state.roleId = payload.user.roleId;
-// 	state.username = payload.user.username;
-// 	state.createdAt = payload.user.createdAt;
-// 	state.updatedAt = payload.user.updatedAt;
-// };
+const fillAuth = (state: typeof initialState, { payload }: CPA<AuthenticationResponse>) => {
+	state._id = payload.user._id;
+	state.email = payload.user.email;
+	state.roleId = payload.user.roleId;
+	state.username = payload.user.username;
+	state.createdAt = payload.user.createdAt;
+	state.updatedAt = payload.user.updatedAt;
+};
 
 const fillUser = (state: typeof initialState, { payload }: CPA<User>) => {
 	state._id = payload._id;
@@ -45,8 +42,8 @@ const { reducer: userReducer } = createSlice({
 	reducers: {},
 	extraReducers: (builder) => {
 		builder
-			// .addCase(authenticationAsyncActions.signIn.fulfilled.type, fillAuth)
-			// .addCase(authenticationAsyncActions.signUp.fulfilled.type, fillAuth)
+			.addCase(authenticationAsyncActions.signIn.fulfilled.type, fillAuth)
+			.addCase(authenticationAsyncActions.signUp.fulfilled.type, fillAuth)
 			.addCase(authenticationAsyncActions.signOut.fulfilled.type, () => initialState)
 			.addCase(authenticationAsyncActions.signOut.rejected.type, () => initialState)
 			.addCase(userAsyncActions.deleteAccount.fulfilled.type, (_, action: CPA<OkResponse>) => {
@@ -57,8 +54,7 @@ const { reducer: userReducer } = createSlice({
 						payload: {},
 					})
 				);
-			})
-			
+			});
 	},
 });
 

@@ -31,11 +31,10 @@ const signUp = createAsyncThunk('authentication/sign-up', async (payload: SignUp
 	}
 });
 
-
 const signOut = createAsyncThunk('authentication/sign-out', async (_, thunkApi) => {
 	thunkApi.dispatch(requestActions.started('authentication/sign-out'));
 	try {
-		const response = await API.get<any, OkResponse>('/sign-out');
+		const response = await API.get<any, OkResponse>('/auth/signout');
 		return response.data;
 	} catch (error: any) {
 		return thunkApi.rejectWithValue({ error });
@@ -46,6 +45,5 @@ const authenticationAsyncActions = {
 	signIn,
 	signOut,
 	signUp,
-	
 };
 export default authenticationAsyncActions;

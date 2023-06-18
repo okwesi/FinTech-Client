@@ -6,7 +6,9 @@ import user from './user';
 import authentication from './authentication';
 
 const reducers = {
-	user, request,authentication,
+	user,
+	request,
+	authentication,
 };
 
 const rootReducer = combineReducers(reducers);

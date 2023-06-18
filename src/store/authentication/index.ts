@@ -3,7 +3,7 @@ import API from '../../lib/utils/api';
 import { requestActions } from '../request';
 import { AuthenticationState, CPA } from '../types';
 import authenticationAsyncActions from './authentication.thunk';
-import { message as toast } from 'antd';
+import { message as toast, message } from 'antd';
 import AuthenticationResponse from '../../network/response/AuthenticationResponse';
 import ErrorResponse from '../../network/response/ErrorResponse';
 
@@ -13,7 +13,7 @@ const initialState: AuthenticationState = {
 	expiryAt: -1,
 };
 
-const fillState = (state:AuthenticationState, { payload }: CPA<AuthenticationResponse>) => {
+const fillState = (state: AuthenticationState, { payload }: CPA<AuthenticationResponse>) => {
 	state.isAuthenticated = true;
 	state.accessToken = payload.accessToken;
 	state.expiryAt = payload.expiryAt;
@@ -36,6 +36,7 @@ const { actions, reducer: authenticationReducer } = createSlice({
 	extraReducers: (builder) => {
 		builder
 			.addCase(authenticationAsyncActions.signIn.fulfilled.type, (state, action: CPA<AuthenticationResponse>) => {
+				message.success('Sign In Successful');
 				fillState(state, action);
 				action.dispatch(
 					requestActions.fulfilled({
@@ -46,6 +47,7 @@ const { actions, reducer: authenticationReducer } = createSlice({
 				);
 			})
 			.addCase(authenticationAsyncActions.signUp.fulfilled.type, (state, action: CPA<AuthenticationResponse>) => {
+				message.success('Sign Up Successful');
 				fillState(state, action);
 				action.dispatch(
 					requestActions.fulfilled({
@@ -120,8 +122,7 @@ const { actions, reducer: authenticationReducer } = createSlice({
 						payload: { ...action.payload.error },
 					})
 				);
-			})
-	
+			});
 	},
 });
 
