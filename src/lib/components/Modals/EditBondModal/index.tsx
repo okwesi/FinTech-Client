@@ -73,10 +73,14 @@ const EditBondModal = ({ handleClose, open, id, data }: any) => {
 				<Typography style={{ fontWeight: '600', fontSize: '20px' }}>Add Bond</Typography>
 				<Divider />
 				<Form>
-					<Form.Item>
-						<Input placeholder="Bond Name" value={bondName} onChange={(e) => setBondName(e.target.value)} />
+					<Form.Item initialValue={bondName}>
+						<Input
+							placeholder="Bond Name"
+							value={bondName}
+							onChange={(e) => setBondName(e.target.value)}
+						/>
 					</Form.Item>
-					<Form.Item>
+					<Form.Item initialValue={purchaseValue}>
 						<Input
 							type="number"
 							placeholder="Purchase Value"
@@ -84,7 +88,7 @@ const EditBondModal = ({ handleClose, open, id, data }: any) => {
 							onChange={(e) => setPurchaseValue(Number(e.target.value))}
 						/>
 					</Form.Item>
-					<Form.Item>
+					<Form.Item initialValue={purchaseDate}>
 						<DatePicker
 							style={{ width: '100%' }}
 							value={purchaseDate ? moment(purchaseDate, 'YYYY-MM-DD') : null}
@@ -93,6 +97,7 @@ const EditBondModal = ({ handleClose, open, id, data }: any) => {
 						/>
 					</Form.Item>
 				</Form>
+
 			</Modal>
 		</>
 	);
