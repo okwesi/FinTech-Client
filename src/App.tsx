@@ -1,11 +1,23 @@
 import { Provider } from 'react-redux';
-import store from './store';
 import { BrowserRouter } from 'react-router-dom';
 import Routes from './Routes';
+import { Store } from 'redux';
+import React from 'react';
+import initializeStore from './store';
 
 function App() {
-	if (!store) return <></>;
+	const[store, setStore] = React.useState<Store>();
 
+	React.useEffect(() => {
+		const start = async () => {
+			const preparedStore = await initializeStore();
+			setStore(preparedStore);
+		};
+
+		start();
+	}, []);
+
+	if (!store) return <></>;
 	return (
 		<Provider store={store}>
 			<BrowserRouter>

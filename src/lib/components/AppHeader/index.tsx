@@ -58,7 +58,7 @@ const AppHeader = () => {
     ];
     return (
         <>
-            <Header style={{ display: 'flex', backgroundColor: 'white', alignItems: 'center', margin: '0' }}>
+            <Header style={{ display: 'flex', backgroundColor: 'transparent', alignItems: 'center', marginBottom: '20px' }}>
                 <img
                     src="https://assets-global.website-files.com/5ee9ebae123fc9271144103a/61c3d870e8d7277e2a318ebc_logo%20a%208center.png"
                     alt="Google"
@@ -77,7 +77,7 @@ const AppHeader = () => {
                 </div>
                 <div style={{ flex: 1 }} />
 
-                {true ? (
+                {false ? (
                     <div style={{ display: 'flex', alignItems: 'center' }}>
                         <Avatar icon={<UserOutlined />} />
                         <Dropdown menu={{ items }} trigger={['click']}>
