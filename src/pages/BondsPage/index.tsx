@@ -8,6 +8,7 @@ import Bond from '../../models/Bond';
 import UTC from '../../lib/utils/date';
 import RequestManager from '../../store/request/manager';
 import { useNavigate } from 'react-router-dom';
+import bondReducer, { resetState } from '../../store/bond';
 
 const BondsPage = () => {
 	const dispatch = useDispatch<any>();
@@ -28,6 +29,7 @@ const BondsPage = () => {
 
 	React.useEffect(() => {
 		dispatch(bondsAsyncActions.index());
+		dispatch(resetState());
 	}, []);
 
 	React.useEffect(() => {
@@ -59,14 +61,16 @@ const BondsPage = () => {
 	// 	return stocksState.list;
 	// }, [stocksState.list]);
 
-
-	const destroy = React.useCallback((bondId: string) => {
-		if (isLoading) {
-			return;
-		}
-		setIsLoading(true);
-		dispatch(bondsAsyncActions.destroy(bondId));
-	}, [isLoading, dispatch]);
+	const destroy = React.useCallback(
+		(bondId: string) => {
+			if (isLoading) {
+				return;
+			}
+			setIsLoading(true);
+			dispatch(bondsAsyncActions.destroy(bondId));
+		},
+		[isLoading, dispatch]
+	);
 
 	return (
 		<div>
@@ -79,74 +83,77 @@ const BondsPage = () => {
 							height: '100vh',
 						}}
 					>
-					{bonds?.map(( bond : Bond) => (
-						<Card
-							key={bond._id}
-							bordered={false}
-							style={{
-								width: '100%',
-								marginBottom: '10px',
-							}}
-							onClick={() => {
-								navigate(`/bonds/${bond._id}`, { state: { bond } })
-							}
-							}
-						>
-							<div
+						{bonds?.map((bond: Bond) => (
+							<Card
+								key={bond._id}
+								bordered={false}
 								style={{
-									display: 'flex',
-									flexDirection: 'row',
-									justifyContent: 'space-between',
-									alignItems: 'center',
+									width: '100%',
+									marginBottom: '10px',
+								}}
+								onClick={() => {
+									navigate(`/bonds/${bond._id}`, { state: { bond } });
 								}}
 							>
-								<Typography style={{ fontWeight: 700 }}>{bond.bondName}</Typography>
-								<Popconfirm
-									title="Are you sure you want to delete this?"
-									onConfirm={() => destroy(bond._id)}
-									okText="Yes"
-									cancelText="No"
+								<div
+									style={{
+										display: 'flex',
+										flexDirection: 'row',
+										justifyContent: 'space-between',
+										alignItems: 'center',
+									}}
 								>
-									<Button type="link" icon={<DeleteOutlined />} />
-								</Popconfirm>
-							</div>
-							<Divider />
-							<div
-								style={{
-									display: 'flex',
-									flexDirection: 'row',
-									justifyContent: 'space-between',
-									alignItems: 'center',
-								}}
-							>
-								<Typography style={{ fontWeight: 500 }}>Purcase: {UTC(bond.purchaseDate)}</Typography>
-								{true ? (
-									<Typography style={{ fontWeight: 400 }}>
-										{' '}
-										<CaretUpOutlined style={{ color: 'greenyellow' }} /> ${bond.purchaseValue}
+									<Typography style={{ fontWeight: 700 }}>{bond.bondName}</Typography>
+									<Popconfirm
+										title="Are you sure you want to delete this?"
+										onConfirm={() => destroy(bond._id)}
+										okText="Yes"
+										cancelText="No"
+									>
+										<Button type="link" icon={<DeleteOutlined />} />
+									</Popconfirm>
+								</div>
+								<Divider />
+								<div
+									style={{
+										display: 'flex',
+										flexDirection: 'row',
+										justifyContent: 'space-between',
+										alignItems: 'center',
+									}}
+								>
+									<Typography style={{ fontWeight: 500 }}>
+										Purcase: {UTC(bond.purchaseDate)}
 									</Typography>
-								) : (
-									<Typography style={{ fontWeight: 400 }}>
-										{' '}
+									{true ? (
+										<Typography style={{ fontWeight: 400 }}>
+											{' '}
+											<CaretUpOutlined style={{ color: 'greenyellow' }} /> ${bond.purchaseValue}
+										</Typography>
+									) : (
+										<Typography style={{ fontWeight: 400 }}>
+											{' '}
 											<CaretDownOutlined style={{ color: 'red' }} /> ${bond.purchaseValue}
+										</Typography>
+									)}
+									<Typography style={{ fontWeight: 500 }}>
+										Marity: {UTC(bond.maturityDate)}
 									</Typography>
-								)}
-								<Typography style={{ fontWeight: 500 }}>Marity: {UTC(bond.maturityDate)}</Typography>
-							</div>
-						</Card>
-					))}
+								</div>
+							</Card>
+						))}
 
-					{false ?? (
-						<Space wrap>
-							<Button type="primary">Prev</Button>
-							<Button>Next</Button>
-						</Space>
-					)}
-				</div>
-			</Col>
-			<Col className="gutter-row" span={5}></Col>
-		</Row>
-		</div >
+						{false ?? (
+							<Space wrap>
+								<Button type="primary">Prev</Button>
+								<Button>Next</Button>
+							</Space>
+						)}
+					</div>
+				</Col>
+				<Col className="gutter-row" span={5}></Col>
+			</Row>
+		</div>
 	);
 };
 

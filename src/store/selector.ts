@@ -26,7 +26,7 @@ export function useStocksState() {
 }
 
 export function useStockState() {
-	return useTypedSelector<StockState>(({ stock }) => stock );
+	return useTypedSelector<StockState>(({ stock }) => stock);
 }
 
 export function useBondsState() {

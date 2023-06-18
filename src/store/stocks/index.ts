@@ -40,7 +40,7 @@ const { reducer: stocksReducer } = createSlice({
 			state = initialState;
 			const message = action.payload.error.message;
 			action.dispatch(
-				requestActions.fulfilled({
+				requestActions.rejected({
 					name: stocksAsyncActions.index.typePrefix,
 					message: '',
 					payload: {},
@@ -76,28 +76,28 @@ const { reducer: stocksReducer } = createSlice({
 			const { stockId } = action.payload;
 			const list = state.list.filter((stock) => stock._id !== stockId);
 			state.list = list;
-		    state.updatedAt = Date.now();
-		    action.dispatch(
-		        requestActions.fulfilled({
-		            name: stocksAsyncActions.destroy.typePrefix,
-		            message: '',
-		            payload: {},
-		        })
-		    );
+			state.updatedAt = Date.now();
+			action.dispatch(
+				requestActions.fulfilled({
+					name: stocksAsyncActions.destroy.typePrefix,
+					message: '',
+					payload: {},
+				})
+			);
 		},
 		[stocksAsyncActions.destroy.rejected.type]: (state, { payload, dispatch }: CPA<ErrorResponse>) => {
-		    if (payload.error.status === 401) {
-		        state = initialState;
-		    }
+			if (payload.error.status === 401) {
+				state = initialState;
+			}
 
-		    dispatch(
-		        requestActions.rejected({
-		            name: stocksAsyncActions.destroy.typePrefix,
-		            message: '',
-		            payload: {},
-		        })
-		    );
-		    return state;
+			dispatch(
+				requestActions.rejected({
+					name: stocksAsyncActions.destroy.typePrefix,
+					message: '',
+					payload: {},
+				})
+			);
+			return state;
 		},
 	},
 });

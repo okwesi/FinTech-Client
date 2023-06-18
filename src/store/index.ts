@@ -18,7 +18,7 @@ const reducers = {
 	bonds,
 	rapidstocks,
 	stock,
-	bond
+	bond,
 };
 
 const rootReducer = combineReducers(reducers);

@@ -99,7 +99,6 @@ const { reducer: bondsReducer } = createSlice({
 			);
 			return state;
 		},
-
 	},
 });
 

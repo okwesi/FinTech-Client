@@ -28,7 +28,6 @@ const StockPage = () => {
 		dispatch(rapidStocksAsyncActions.index());
 	}, []);
 
-
 	React.useEffect(() => {
 		if (requestUpdatedAt === request.updatedAt) {
 			return;
@@ -65,18 +64,17 @@ const StockPage = () => {
 		return rapidStocksState.list.slice(0, 5);
 	}, [rapidStocksState.list]);
 
+	const destroy = React.useCallback(
+		(stockId: string) => {
+			if (isLoading) {
+				return;
+			}
 
-	const destroy = React.useCallback((stockId: string) => {
-		if (isLoading) {
-			return;
-		}
-
-		setIsLoading(true);
-		dispatch(stocksAsyncActions.destroy(stockId));
-	}, [isLoading, dispatch]);
-
-
-
+			setIsLoading(true);
+			dispatch(stocksAsyncActions.destroy(stockId));
+		},
+		[isLoading, dispatch]
+	);
 
 	return (
 		<div>
@@ -146,10 +144,9 @@ const StockPage = () => {
 								style={{
 									width: '100%',
 									marginBottom: '10px',
-
 								}}
 								onClick={() => {
-									navigate(`/stock/${stock._id}`, { state: { stock } })
+									navigate(`/stock/${stock._id}`, { state: { stock } });
 								}}
 							>
 								<div

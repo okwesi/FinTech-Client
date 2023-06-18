@@ -151,9 +151,7 @@ const AddStockModal = ({ handleClose, open }: any) => {
 							onChange={(e) => setBrokerage(e.target.value)}
 						/>
 					</Form.Item>
-					{/* <Form.Item>
-						<button type="submit">Submit</button>
-					</Form.Item> */}
+
 				</Form>
 			</Modal>
 		</>

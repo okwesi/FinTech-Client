@@ -28,19 +28,16 @@ const store = createAsyncThunk('bonds/create', async (payload: CreateBondRequest
 	}
 });
 
-const destroy = createAsyncThunk(
-	'bonds/delete',
-	async (bondId: string, thunkAPI) => {
-		thunkAPI.dispatch(requestActions.started('bonds/delete'));
-		try {
-			const response = await API.delete<any, any>(`/user-bonds/${bondId}/`);
+const destroy = createAsyncThunk('bonds/delete', async (bondId: string, thunkAPI) => {
+	thunkAPI.dispatch(requestActions.started('bonds/delete'));
+	try {
+		const response = await API.delete<any, any>(`/user-bonds/${bondId}/`);
 
-			return { bondId };
-		} catch (error) {
-			return thunkAPI.rejectWithValue({ payload: bondId, error });
-		}
+		return { bondId };
+	} catch (error) {
+		return thunkAPI.rejectWithValue({ payload: bondId, error });
 	}
-);
+});
 
 const bondsAsyncActions = {
 	index,

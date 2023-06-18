@@ -33,13 +33,10 @@ const destroy = createAsyncThunk('stocks/delete', async (stockId: string, thunkA
 		const response = await API.delete<any, any>(`/user-stocks/${stockId}/`);
 
 		return { stockId };
-
 	} catch (error) {
 		return thunkAPI.rejectWithValue({ payload: stockId, error });
 	}
 });
-
-
 
 const stocksAsyncActions = {
 	index,

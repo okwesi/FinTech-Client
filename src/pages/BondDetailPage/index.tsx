@@ -4,12 +4,12 @@ import { useAuthenticationState, useBondState, useRapidStocksState, useRequestSt
 import axios from 'axios';
 import { useDispatch } from 'react-redux';
 import RequestManager from '../../store/request/manager';
-import { message } from 'antd';
-import bondAsyncActions from '../../store/bond/stock.thunk';
+import { Button, message } from 'antd';
+import bondAsyncActions from '../../store/bond/bond.thunk';
 import Bond from '../../models/Bond';
+import EditBondModal from '../../lib/components/Modals/EditBondModal';
 
 const BondDetailPage = () => {
-	const location = useLocation();
 	const navigate = useNavigate();
 	const { id } = useParams();
 	const dispatch = useDispatch<any>();
@@ -19,13 +19,15 @@ const BondDetailPage = () => {
 	const authenticationState = useAuthenticationState();
 
 	const [requestUpdatedAt, setRequestUpdatedAt] = React.useState(request.updatedAt);
+	const [open, setOpen] = React.useState(false);
 
-	const stateBond: Bond | undefined = React.useMemo(() => {
-		if (!location.state?.bond) {
-			return;
-		}
-		return location.state?.bond;
-	}, [location.state?.bond]);
+	const handleClose = () => {
+		setOpen(false);
+	};
+
+	const handleOpen = () => {
+		setOpen(true);
+	};
 
 	const bond: Bond | undefined = React.useMemo(() => {
 		if (!bondState.detail) {
@@ -33,7 +35,6 @@ const BondDetailPage = () => {
 		}
 		return bondState.detail;
 	}, [bondState.detail]);
-
 
 	React.useEffect(() => {
 		if (requestUpdatedAt === request.updatedAt) {
@@ -55,13 +56,12 @@ const BondDetailPage = () => {
 			setIsLoading(false);
 			return;
 		}
+
+
 	}, [requestUpdatedAt, request.updatedAt, dispatch]);
 
 	React.useEffect(() => {
 		if (!id) {
-			return;
-		}
-		if (stateBond) {
 			return;
 		}
 		if (!authenticationState.isAuthenticated) {
@@ -72,18 +72,11 @@ const BondDetailPage = () => {
 
 		setIsLoading(true);
 		dispatch(bondAsyncActions.show({ bondId: id }));
-	}, [id, dispatch, bondState, authenticationState.isAuthenticated]);
-
+	}, [id, dispatch, authenticationState.isAuthenticated]);
 
 	return (
 		<>
-			{stateBond && (
-				<div>
-					<h1>{stateBond.bondName}</h1>
-					{/* <h1>{stateBond.quantity}</h1>
-						<h1>{stateBond.price}</h1> */}
-				</div>
-			)}
+			
 			{bond && (
 				<div>
 					<h1>{bond.bondName}</h1>
@@ -91,9 +84,14 @@ const BondDetailPage = () => {
 						<h1>{bond.price}</h1> */}
 				</div>
 			)}
+			<Button type="primary" onClick={handleOpen}>
+				Edit Bond
+			</Button>
+
+
+			<EditBondModal open={open} handleClose={handleClose} id={id} data={bond} />
 		</>
 	);
-
 };
 
 export default BondDetailPage;
