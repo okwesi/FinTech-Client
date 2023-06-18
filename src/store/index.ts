@@ -68,7 +68,7 @@ const initializeStore = async () => {
 	const store = configureStore({
 		reducer: rootReducer,
 		middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(asyncDispatchMiddleware),
-		devTools: true,
+		devTools: false,
 		preloadedState,
 	});
 

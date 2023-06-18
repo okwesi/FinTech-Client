@@ -5,6 +5,7 @@ import authenticationAsyncActions from '../authentication/authentication.thunk';
 import bondsAsyncActions from './bonds.thunk';
 import ErrorResponse from '../../network/response/ErrorResponse';
 import BondsResponse from '../../network/response/BondsResponse';
+import Bond from '../../models/Bond';
 
 
 
@@ -20,8 +21,8 @@ const initialState: BondsState = {
 
 
 
-const { reducer: stocksReducer } = createSlice({
-    name: 'stocks',
+const { reducer: bondsReducer } = createSlice({
+    name: 'bonds',
     initialState,
     reducers: {},
     extraReducers: {
@@ -49,7 +50,32 @@ const { reducer: stocksReducer } = createSlice({
                 })
             );
         },
+        [bondsAsyncActions.store.fulfilled.type]: (state, action: CPA<Bond>) => {
+            state.list.push(action.payload);
+            state.updatedAt = Date.now();
+            action.dispatch(
+                requestActions.fulfilled({
+                    name: bondsAsyncActions.store.typePrefix,
+                    message: '',
+                    payload: {},
+                })
+            );
+        },
+        [bondsAsyncActions.store.rejected.type]: (state, { payload, dispatch }: CPA<ErrorResponse>) => {
+            if (payload.error.status === 401) {
+                state = initialState;
+            }
+
+            dispatch(
+                requestActions.rejected({
+                    name: bondsAsyncActions.store.typePrefix,
+                    message: '',
+                    payload: {},
+                })
+            );
+            return state;
+        },
     },
 });
 
-export default stocksReducer;
+export default bondsReducer;

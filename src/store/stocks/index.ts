@@ -5,6 +5,7 @@ import authenticationAsyncActions from '../authentication/authentication.thunk';
 import StocksResponse from '../../network/response/StocksResponse';
 import stocksAsyncActions from './stocks.thunk';
 import ErrorResponse from '../../network/response/ErrorResponse';
+import Stock from '../../models/Stock';
 
 
 
@@ -49,6 +50,57 @@ const { reducer: stocksReducer } = createSlice({
                 })
             );
         },
+        [stocksAsyncActions.store.fulfilled.type]: (state, action: CPA<Stock>) => {
+            state.list.push(action.payload);
+            state.updatedAt = Date.now();
+            action.dispatch(
+                requestActions.fulfilled({
+                    name: stocksAsyncActions.store.typePrefix,
+                    message: '',
+                    payload: {},
+                })
+            );
+        },
+        [stocksAsyncActions.store.rejected.type]: (state, { payload, dispatch }: CPA<ErrorResponse>) => {
+            if (payload.error.status === 401) {
+                state = initialState;
+            }
+
+            dispatch(
+                requestActions.rejected({
+                    name: stocksAsyncActions.store.typePrefix,
+                    message: '',
+                    payload: {},
+                })
+            );
+            return state;
+        },
+        // [stocksAsyncActions.delete.fulfilled.type]: (state, action: CPA<{ faqId: string }>) => {
+        //     const list = [...state.list];
+        //     state.list = list.filter(({ id }) => Number(id) !== Number(action.payload.faqId));
+        //     state.updatedAt = Timing.now();
+        //     action.dispatch(
+        //         requestActions.fulfilled({
+        //             name: stocksAsyncActions.delete.typePrefix,
+        //             message: '',
+        //             payload: {},
+        //         })
+        //     );
+        // },
+        // [stocksAsyncActions.delete.rejected.type]: (state, { payload, dispatch }: CPA<ErrorResponse>) => {
+        //     if (payload.error.status === 401) {
+        //         state = initialState;
+        //     }
+
+        //     dispatch(
+        //         requestActions.rejected({
+        //             name: stocksAsyncActions.delete.typePrefix,
+        //             message: '',
+        //             payload: {},
+        //         })
+        //     );
+        //     return state;
+        // },
     },
 });
 
