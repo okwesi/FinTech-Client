@@ -59,9 +59,9 @@ const { actions, reducer: authenticationReducer } = createSlice({
 			.addCase(
 				authenticationAsyncActions.signIn.rejected.type,
 				(_, { payload, dispatch }: CPA<ErrorResponse>) => {
-					//TODO: FIX THE ERROR MESSAGE
-					const message = payload.error.status;
-					// if (message.match(/invalid(\s|\_)credentials/is)) toast.error('Invalid Credentials. Try again!');
+					const message = payload.error.message;
+					//TODO: FIX ERROR
+					toast.error(message);
 					dispatch(
 						requestActions.rejected({
 							name: authenticationAsyncActions.signIn.typePrefix,
@@ -74,8 +74,8 @@ const { actions, reducer: authenticationReducer } = createSlice({
 			.addCase(
 				authenticationAsyncActions.signUp.rejected.type,
 				(_, { payload, dispatch }: CPA<ErrorResponse>) => {
-					const message = payload.error.status;
-					//TODO: FIX THE ERROR MESSAGE
+					const message = payload.error.message;
+					toast.error(message);
 					dispatch(
 						requestActions.rejected({
 							name: authenticationAsyncActions.signUp.typePrefix,
@@ -91,7 +91,6 @@ const { actions, reducer: authenticationReducer } = createSlice({
 				state.isAuthenticated = false;
 				state.accessToken = '';
 				state.expiryAt = -1;
-				//TODO: FIX THE ERROR MESSAGE
 				// LS.removeAccessToken();
 				localStorage.setItem('accessToken', '');
 				API.removeAccessToken();

@@ -45,7 +45,6 @@ const AppHeader = () => {
 	};
 
 	const signOut = () => {
-        console.log('signout')
 		dispatch(authenticationAsyncActions.signOut());
 		navigate('/');
 	};

@@ -9,13 +9,7 @@ import authenticationAsyncActions from '../../store/authentication/authenticatio
 import isAnyEmpty from '../../lib/utils/isEmpty';
 
 const SignnPage = () => {
-	const onFinish = (values: any) => {
-		console.log('Success:', values);
-	};
 
-	const onFinishFailed = (errorInfo: any) => {
-		console.log('Failed:', errorInfo);
-	};
 	const navigate = useNavigate();
 	const dispatch = useDispatch<any>();
 

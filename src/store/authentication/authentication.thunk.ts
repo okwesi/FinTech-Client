@@ -12,7 +12,6 @@ const signIn = createAsyncThunk('authentication/sign-in', async (payload: SignIn
 		const response = await API.post<SignInRequest, AuthenticationResponse>('auth/signin', {
 			...payload,
 		});
-		console.log(response.data);
 		return response.data;
 	} catch (error: any) {
 		return thunkApi.rejectWithValue({ payload, error });

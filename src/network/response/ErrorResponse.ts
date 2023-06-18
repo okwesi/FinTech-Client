@@ -1,6 +1,6 @@
 export interface ErrorPayload {
 	status: number;
-	meesage: string;
+	message: string;
 }
 
 export default interface ErrorResponse {
