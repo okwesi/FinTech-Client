@@ -7,11 +7,13 @@ import bondsAsyncActions from '../../store/bonds/bonds.thunk';
 import Bond from '../../models/Bond';
 import UTC from '../../lib/utils/date';
 import RequestManager from '../../store/request/manager';
+import { useNavigate } from 'react-router-dom';
 
 const BondsPage = () => {
 	const dispatch = useDispatch<any>();
 	const bondsState = useBondsState();
-	
+	const navigate = useNavigate();
+
 	const request = useRequestState();
 	const [requestUpdatedAt, setRequestUpdatedAt] = React.useState(request.updatedAt);
 
@@ -77,70 +79,74 @@ const BondsPage = () => {
 							height: '100vh',
 						}}
 					>
-						{bonds?.map(({ _id, bondName, maturityDate, purchaseDate, purchaseValue }: Bond) => (
-							<Card
-								key={_id}
-								bordered={false}
+					{bonds?.map(( bond : Bond) => (
+						<Card
+							key={bond._id}
+							bordered={false}
+							style={{
+								width: '100%',
+								marginBottom: '10px',
+							}}
+							onClick={() => {
+								navigate(`/bonds/${bond._id}`, { state: { bond } })
+							}
+							}
+						>
+							<div
 								style={{
-									width: '100%',
-									marginBottom: '10px',
+									display: 'flex',
+									flexDirection: 'row',
+									justifyContent: 'space-between',
+									alignItems: 'center',
 								}}
 							>
-								<div
-									style={{
-										display: 'flex',
-										flexDirection: 'row',
-										justifyContent: 'space-between',
-										alignItems: 'center',
-									}}
+								<Typography style={{ fontWeight: 700 }}>{bond.bondName}</Typography>
+								<Popconfirm
+									title="Are you sure you want to delete this?"
+									onConfirm={() => destroy(bond._id)}
+									okText="Yes"
+									cancelText="No"
 								>
-									<Typography style={{ fontWeight: 700 }}>{bondName}</Typography>
-									<Popconfirm
-										title="Are you sure you want to delete this?"
-										onConfirm={() => destroy(_id)}
-										okText="Yes"
-										cancelText="No"
-									>
-										<Button type="link" icon={<DeleteOutlined />} />
-									</Popconfirm>
-								</div>
-								<Divider />
-								<div
-									style={{
-										display: 'flex',
-										flexDirection: 'row',
-										justifyContent: 'space-between',
-										alignItems: 'center',
-									}}
-								>
-									<Typography style={{ fontWeight: 500 }}>Purcase: {UTC(purchaseDate)}</Typography>
-									{true ? (
-										<Typography style={{ fontWeight: 400 }}>
-											{' '}
-											<CaretUpOutlined style={{ color: 'greenyellow' }} /> ${purchaseValue}
-										</Typography>
-									) : (
-										<Typography style={{ fontWeight: 400 }}>
-											{' '}
-											<CaretDownOutlined style={{ color: 'red' }} /> ${purchaseValue}
-										</Typography>
-									)}
-									<Typography style={{ fontWeight: 500 }}>Marity: {UTC(maturityDate)}</Typography>
-								</div>
-							</Card>
-						))}
+									<Button type="link" icon={<DeleteOutlined />} />
+								</Popconfirm>
+							</div>
+							<Divider />
+							<div
+								style={{
+									display: 'flex',
+									flexDirection: 'row',
+									justifyContent: 'space-between',
+									alignItems: 'center',
+								}}
+							>
+								<Typography style={{ fontWeight: 500 }}>Purcase: {UTC(bond.purchaseDate)}</Typography>
+								{true ? (
+									<Typography style={{ fontWeight: 400 }}>
+										{' '}
+										<CaretUpOutlined style={{ color: 'greenyellow' }} /> ${bond.purchaseValue}
+									</Typography>
+								) : (
+									<Typography style={{ fontWeight: 400 }}>
+										{' '}
+											<CaretDownOutlined style={{ color: 'red' }} /> ${bond.purchaseValue}
+									</Typography>
+								)}
+								<Typography style={{ fontWeight: 500 }}>Marity: {UTC(bond.maturityDate)}</Typography>
+							</div>
+						</Card>
+					))}
 
-						{false ?? (
-							<Space wrap>
-								<Button type="primary">Prev</Button>
-								<Button>Next</Button>
-							</Space>
-						)}
-					</div>
-				</Col>
-				<Col className="gutter-row" span={5}></Col>
-			</Row>
-		</div>
+					{false ?? (
+						<Space wrap>
+							<Button type="primary">Prev</Button>
+							<Button>Next</Button>
+						</Space>
+					)}
+				</div>
+			</Col>
+			<Col className="gutter-row" span={5}></Col>
+		</Row>
+		</div >
 	);
 };
 

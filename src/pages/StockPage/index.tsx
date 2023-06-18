@@ -1,6 +1,5 @@
 import { CaretDownOutlined, CaretUpOutlined, DeleteOutlined } from '@ant-design/icons';
 import { Divider, Row, Col, Space, Card, Typography, Button, message, Popconfirm } from 'antd';
-import Title from 'antd/es/typography/Title';
 import React from 'react';
 import { useRapidStocksState, useRequestState, useStocksState } from '../../store/selector';
 import { useDispatch } from 'react-redux';
@@ -8,11 +7,12 @@ import stocksAsyncActions from '../../store/stocks/stocks.thunk';
 import Stock from '../../models/Stock';
 import rapidStocksAsyncActions from '../../store/rapidAPIStocks/rapidStocks.thunk';
 import RapidStocks from '../../models/RapidStock';
-import { Link } from 'react-router-dom';
+import { Link, Navigate, useNavigate } from 'react-router-dom';
 import RequestManager from '../../store/request/manager';
 
 const StockPage = () => {
 	const dispatch = useDispatch<any>();
+	const navigate = useNavigate();
 	const request = useRequestState();
 	const stocksState = useStocksState();
 	const rapidStocksState = useRapidStocksState();
@@ -43,8 +43,8 @@ const StockPage = () => {
 			return;
 		}
 
-		if (RM.isRejected(stocksAsyncActions.store.typePrefix)) {
-			RM.consume(stocksAsyncActions.store.typePrefix);
+		if (RM.isRejected(stocksAsyncActions.destroy.typePrefix)) {
+			RM.consume(stocksAsyncActions.destroy.typePrefix);
 			message.error('Something went wrong');
 			setIsLoading(false);
 			return;
@@ -139,14 +139,17 @@ const StockPage = () => {
 							Your Stocks
 						</Typography>
 
-						{stocks?.map(({ _id, stockName, stockSymbol, purchasePrice }: Stock) => (
+						{stocks?.map((stock: Stock) => (
 							<Card
-								key={_id}
+								key={stock._id}
 								bordered={false}
 								style={{
 									width: '100%',
 									marginBottom: '10px',
 
+								}}
+								onClick={() => {
+									navigate(`/stock/${stock._id}`, { state: { stock } })
 								}}
 							>
 								<div
@@ -157,10 +160,10 @@ const StockPage = () => {
 										alignItems: 'center',
 									}}
 								>
-									<Typography style={{ fontWeight: 700 }}>{stockName}</Typography>
+									<Typography style={{ fontWeight: 700 }}>{stock.stockName}</Typography>
 									<Popconfirm
 										title="Are you sure you want to delete this?"
-										onConfirm={() => destroy(_id)}
+										onConfirm={() => destroy(stock._id)}
 										okText="Yes"
 										cancelText="No"
 									>
@@ -177,8 +180,8 @@ const StockPage = () => {
 										alignItems: 'center',
 									}}
 								>
-									<Typography style={{ fontWeight: 500 }}>{stockSymbol}</Typography>
-									<Typography style={{ fontWeight: 400 }}>${purchasePrice}</Typography>
+									<Typography style={{ fontWeight: 500 }}>{stock.stockSymbol}</Typography>
+									<Typography style={{ fontWeight: 400 }}>${stock.purchasePrice}</Typography>
 									{true ? (
 										<CaretUpOutlined style={{ color: 'greenyellow' }} />
 									) : (

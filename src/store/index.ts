@@ -7,6 +7,8 @@ import authentication from './authentication';
 import stocks from './stocks';
 import bonds from './bonds';
 import rapidstocks from './rapidAPIStocks';
+import stock from './stock';
+import bond from './bond';
 
 const reducers = {
 	user,
@@ -15,6 +17,8 @@ const reducers = {
 	stocks,
 	bonds,
 	rapidstocks,
+	stock,
+	bond
 };
 
 const rootReducer = combineReducers(reducers);
