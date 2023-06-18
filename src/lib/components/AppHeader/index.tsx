@@ -45,6 +45,7 @@ const AppHeader = () => {
 	};
 
 	const signOut = () => {
+        console.log('signout')
 		dispatch(authenticationAsyncActions.signOut());
 		navigate('/');
 	};
@@ -72,8 +73,8 @@ const AppHeader = () => {
 		},
 		{
 			label: 'Sign Out',
-			key: '3',
-			onClick: () => signOut,
+			key: '4',
+			onClick: () => signOut(),
 		},
 	];
 	return (

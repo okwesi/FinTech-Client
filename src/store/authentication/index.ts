@@ -36,7 +36,6 @@ const { actions, reducer: authenticationReducer } = createSlice({
 	extraReducers: (builder) => {
 		builder
 			.addCase(authenticationAsyncActions.signIn.fulfilled.type, (state, action: CPA<AuthenticationResponse>) => {
-				message.success('Sign In Successful');
 				fillState(state, action);
 				action.dispatch(
 					requestActions.fulfilled({
@@ -60,6 +59,7 @@ const { actions, reducer: authenticationReducer } = createSlice({
 			.addCase(
 				authenticationAsyncActions.signIn.rejected.type,
 				(_, { payload, dispatch }: CPA<ErrorResponse>) => {
+					//TODO: FIX THE ERROR MESSAGE
 					const message = payload.error.status;
 					// if (message.match(/invalid(\s|\_)credentials/is)) toast.error('Invalid Credentials. Try again!');
 					dispatch(
@@ -75,7 +75,7 @@ const { actions, reducer: authenticationReducer } = createSlice({
 				authenticationAsyncActions.signUp.rejected.type,
 				(_, { payload, dispatch }: CPA<ErrorResponse>) => {
 					const message = payload.error.status;
-
+					//TODO: FIX THE ERROR MESSAGE
 					dispatch(
 						requestActions.rejected({
 							name: authenticationAsyncActions.signUp.typePrefix,
@@ -91,7 +91,7 @@ const { actions, reducer: authenticationReducer } = createSlice({
 				state.isAuthenticated = false;
 				state.accessToken = '';
 				state.expiryAt = -1;
-
+				//TODO: FIX THE ERROR MESSAGE
 				// LS.removeAccessToken();
 				localStorage.setItem('accessToken', '');
 				API.removeAccessToken();
