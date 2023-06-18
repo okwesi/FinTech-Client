@@ -4,11 +4,13 @@ import API from '../lib/utils/api';
 import request from './request';
 import user from './user';
 import authentication from './authentication';
+import stocks from './stocks';
 
 const reducers = {
 	user,
 	request,
 	authentication,
+	stocks,
 };
 
 const rootReducer = combineReducers(reducers);

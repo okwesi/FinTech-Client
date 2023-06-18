@@ -2,26 +2,41 @@ import { CaretDownOutlined, CaretUpOutlined } from '@ant-design/icons';
 import { Divider, Row, Col, Space, Card, Typography, Button } from 'antd';
 import Title from 'antd/es/typography/Title';
 import React from 'react';
+import { useStocksState } from '../../store/selector';
+import { useDispatch } from 'react-redux';
+import stocksAsyncActions from '../../store/stocks/stocks.thunk';
+import Stock from '../../models/Stock';
 
 const StockPage = () => {
-	const cardData = [
-		{ title: 'My First Stock', price: 50, positiveChange: false },
-		{ title: 'My First Stock', price: 50, positiveChange: false },
-		{ title: 'My First Stock', price: 50, positiveChange: false },
-		{ title: 'My First Stock', price: 50, positiveChange: false },
-	];
+
+	const dispatch = useDispatch<any>();
+	const stocksState = useStocksState();
+
+	const stocks = React.useMemo(() => {
+		if (stocksState.list.length === 0) {
+			return;
+		}
+		return stocksState.list;
+	}, [stocksState.list]);
+
+	React.useEffect(() => {
+		dispatch(stocksAsyncActions.index())
+	}, [])
+
+	
 	return (
 		<div>
 			<Row gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }} justify="space-between" align="top">
 				<Col className="gutter-row" span={5}>
 					<div style={{ height: 500, width: '100%', overflow: 'hidden' }}>
-						{cardData.map((data, index) => (
+						{stocks?.map(({_id } : any) => (
 							<Card
 								bordered={false}
 								style={{
 									width: '100%',
 									marginBottom: '10px',
 								}}
+								key={_id}
 							>
 								<div
 									style={{
@@ -50,16 +65,16 @@ const StockPage = () => {
 							height: '100vh',
 						}}
 					>
-						{cardData.map((data, index) => (
+						{stocks?.map(({_id, stockName, stockSymbol, purchasePrice} : Stock) => (
 							<Card
-								key={index}
+								key={_id}
 								bordered={false}
 								style={{
 									width: '100%',
 									marginBottom: '10px',
 								}}
 							>
-								<Typography style={{ fontWeight: 700 }}>{data.title}</Typography>
+								<Typography style={{ fontWeight: 700 }}>{stockName}</Typography>
 								<Divider />
 								<div
 									style={{
@@ -69,9 +84,9 @@ const StockPage = () => {
 										alignItems: 'center',
 									}}
 								>
-									<Typography style={{ fontWeight: 500 }}>AAAL</Typography>
-									<Typography style={{ fontWeight: 400 }}>${data.price}</Typography>
-									{data.positiveChange ? (
+									<Typography style={{ fontWeight: 500 }}>{stockSymbol}</Typography>
+									<Typography style={{ fontWeight: 400 }}>${purchasePrice}</Typography>
+									{true ? (
 										<CaretUpOutlined style={{ color: 'greenyellow' }} />
 									) : (
 										<CaretDownOutlined style={{ color: 'red' }} />

@@ -1,5 +1,7 @@
 import { PayloadAction } from '@reduxjs/toolkit';
 import User from '../models/User';
+import Stock from '../models/Stock';
+import { Pagination } from '../network/response/StocksResponse';
 
 export interface SliceState<T> {
 	updatedAt: number;
@@ -12,7 +14,12 @@ export interface AuthenticationState {
 	expiryAt: number;
 }
 
-// export type DispensariesState = SliceState<Dispensary>;
+export type StocksState = {
+	list: Array<Stock>;
+	pagination: Pagination;
+	updatedAt: number;
+};
+// export type StocksState = SliceState<Stock>;
 
 export interface ValidationState {}
 
