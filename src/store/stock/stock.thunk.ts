@@ -18,8 +18,8 @@ const update = createAsyncThunk('stocks/update', async (payload: StockUpdateRequ
 	thunkAPI.dispatch(requestActions.started(update.typePrefix));
 	const { id } = payload;
 	try {
-		const response = await API.put<StockUpdateRequest, Stock>(`/stocks/${id}`, payload);
-
+		const response = await API.put<StockUpdateRequest, Stock>(`/user-stocks/${id}`, payload);
+		console.log(response.data);
 		return response.data;
 	} catch (error) {
 		return thunkAPI.rejectWithValue({ payload, error });

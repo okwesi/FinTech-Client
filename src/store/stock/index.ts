@@ -60,7 +60,7 @@ const { reducer: stockReducer } = createSlice({
 				state = initialState;
 				const message = action.payload.error.message;
 				action.dispatch(
-					requestActions.fulfilled({
+					requestActions.rejected({
 						name: stockAsyncActions.update.typePrefix,
 						message: '',
 						payload: {},

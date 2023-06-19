@@ -145,9 +145,7 @@ const StockPage = () => {
 									width: '100%',
 									marginBottom: '10px',
 								}}
-								onClick={() => {
-									navigate(`/stock/${stock._id}`, { state: { stock } });
-								}}
+								
 							>
 								<div
 									style={{
@@ -179,11 +177,14 @@ const StockPage = () => {
 								>
 									<Typography style={{ fontWeight: 500 }}>{stock.stockSymbol}</Typography>
 									<Typography style={{ fontWeight: 400 }}>${stock.purchasePrice}</Typography>
-									{true ? (
-										<CaretUpOutlined style={{ color: 'greenyellow' }} />
-									) : (
-										<CaretDownOutlined style={{ color: 'red' }} />
-									)}
+									<Button
+										type="link"
+										onClick={() => {
+											navigate(`/stock/${stock._id}`, { state: { stock } });
+										}}
+									>
+										More
+									</Button>
 								</div>
 							</Card>
 						))}
