@@ -17,10 +17,9 @@ This is the client side of the FinTech project. A web application developed usin
 
 ## Run Locally
 Follow these steps to run this project locally
-- Run `yarn setup`. This will copy the example files such as `.env.example` to their respective destinations.
+- Clone the project
 	- For now you dont need an env file as the keys are free to use 
 - Run `yarn install` to install project dependencies, if you don't already have dependencies installed.
-- Run `yarn make:all` to run setup scripts
 - Start the application with `yarn start`
 - You should be able to preview in the browser at `http://localhost:3000`
 
